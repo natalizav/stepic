@@ -19,10 +19,13 @@ class AnswerForm(forms.Form):
     try:
       q = int(question)
       question = Question.objects.get(id=id)
-	except Question.DoesNotExist:
-		raise Http404raise forms.ValidationError(
-        u'Сообщение не корректно', code=12)
-    return message + \
+		except Question.DoesNotExist:
+			raise forms.ValidationError(
+        'Not Found', code=1)
+    except ValueError:
+    	raise forms.ValidationError(
+    		'Need Integer', code=2)
+    return  + \
     "\nThank you for your attention."
 
   
