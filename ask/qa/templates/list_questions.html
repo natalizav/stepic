@@ -1,1 +1,11 @@
-
+{% if questions %}
+  <ul>
+  {% for q in questions %}
+    <li>
+      <a href="/question/{{ q.id }}/">{{ q.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+<p>empty</p>
+{% endif %}
