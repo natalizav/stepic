@@ -47,6 +47,7 @@ def get_question (request, id):
 def ask(request):
 	if request.method == "POST":
 		form = AskForm(request.POST)
+		form._user = request.user
 		if form.is_valid():
 			q = form.save()
 			return HttpResponseRedirect('/question/' + str(q.id) + '/')
@@ -59,6 +60,7 @@ def ask(request):
 @require_POST
 def answer(request):
 	form = AnswerFrom(request.POST)
+	form._user = request.user
 	if form.is_valid():
 		a = form.save()
 	return HttpResponseRedirect('/question/' + str(form.question) + '/')
@@ -66,8 +68,11 @@ def answer(request):
 def login_form(request):
 	if request.method == 'POST':
 		form = LoginForm(request.POST)
-		if formis_valid():
-			login(request, form._user)
+		u = request.POST.get('username')
+		p = request.POST.get('password')
+		user = authenticate(username=u, password=p)
+		if user is not None and user.is_active:
+			login(request, user)
 			return HttpResponseRedirect('/')
 	else:
 		form = LoginForm()
