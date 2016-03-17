@@ -5,3 +5,8 @@
   <li> {{ a.text }} </li>
 {% endfor %}
 </ul>
+<form action="/answer/" method="POST">
+{{ form.as_ul }}
+{% csrf_token %}
+<input type="submit" value="Answer">
+</form>
