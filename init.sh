@@ -8,4 +8,6 @@ sudo /etc/init.d/gunicorn restart
 sudo /etc/init.d/mysql start
 git config --global user.email "natalizav@mail.ru"
 git config --global user.name "natalizav"
+sudo apt-get install mc --yes
 /home/box/web/db.sh
+mc
