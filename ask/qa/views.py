@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
 from qa.models import Question, Answer
-from qa.forms import AskForm, AnswerForm
+from qa.forms import AskForm, AnswerForm, LoginForm, SignupForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_POST
 
@@ -61,3 +63,29 @@ def answer(request):
 		a = form.save()
 	return HttpResponseRedirect('/question/' + str(form.question) + '/')
 
+def login_form(request):
+	if request.method == 'POST':
+		form = LoginForm(request.POST)
+		if formis_valid():
+			login(request, form._user)
+			return HttpResponseRedirect('/')
+	else:
+		form = LoginForm()
+	return render(request, 'login.html', {
+		'form': form,
+	})
+
+def signup(request):
+	if request.method == 'POST':
+		form = SignupForm(request.POST)
+		p = request.POST
+		if form.is_valid():
+			User.objects.create_user(username=p.get('username'), email=p.get('email'), password=p.get('password'))
+			user = authenticate(username=p.get('username'), password=p.get('password'))
+			login(request, user)
+			return HttpResponseRedirect('/')
+	else:
+		form = SignupForm()
+	return render(request, 'signup.html', {
+		'form': form,
+	})

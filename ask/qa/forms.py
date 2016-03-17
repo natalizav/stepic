@@ -1,5 +1,7 @@
 from django import forms
 from qa.models import Question, Answer
+from django.contrib.auth.models import User
+import pprint
 
 class AskForm(forms.Form):
   title = forms.CharField(max_length=100)
@@ -30,4 +32,25 @@ class AnswerForm(forms.Form):
 		a = Answer(text=self.cleaned_data.text, question_id=self.cleaned_data.question)
 		a.save()
 		return a 
-  
+ 
+class SignupForm(forms.Form):
+	username = forms.CharField()
+	email = forms.EmailField()
+	password = forms.CharField(widget=forms.PasswordInput)
+
+	def save(self):
+		pprint.pprint(self)
+		user = self.cleaned_data
+		#User.objects.create_user(self.username, self.email, self.password)
+
+class LoginForm(forms.Form):
+	username = forms.CharField()
+	password = forms.CharField(widget=forms.PasswordInput)
+
+	def clean(self):
+		u = self.cleaned_data
+		user = authenticate(username=u.username, password=u.password)
+		if user in None or not user.is_active:
+			raise forms.ValidationError('Incorect data', code=3)
+		self._user = user
+		
