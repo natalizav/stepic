@@ -33,8 +33,9 @@ def get_question (request, id):
 		question = Question.objects.get(id=id)
 	except Question.DoesNotExist:
 		raise Http404
+	answers = question.answer_set.all()
 	return render(request, 'question.html', {
-		'question': question,
+		'question': question, 'answers': answers
 	})
 
 	

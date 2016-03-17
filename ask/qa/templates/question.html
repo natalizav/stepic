@@ -1,7 +1,7 @@
-<h1>question.title</h1>
-<p>question.text</p>
+<h1> {{ question.title }} </h1>
+<p> {{ question.text }} </p>
 <ul>
-{% for a in question.answer_set %}
-  <li>a.text</li>
+{% for a in answers %}
+  <li> {{ a.text }} </li>
 {% endfor %}
 </ul>
